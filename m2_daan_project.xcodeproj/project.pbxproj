@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B55773727E20EB30010475B /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B55773627E20EB30010475B /* CustomCell.swift */; };
 		3B72876D27DB4E3700E01486 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72876C27DB4E3700E01486 /* AppDelegate.swift */; };
 		3B72876F27DB4E3700E01486 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72876E27DB4E3700E01486 /* SceneDelegate.swift */; };
 		3B72877127DB4E3700E01486 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B72877027DB4E3700E01486 /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B55773627E20EB30010475B /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		3B72876927DB4E3700E01486 /* m2_daan_project.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = m2_daan_project.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B72876C27DB4E3700E01486 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3B72876E27DB4E3700E01486 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				3B72877A27DB4E3800E01486 /* LaunchScreen.storyboard */,
 				3B72877D27DB4E3800E01486 /* Info.plist */,
 				3B72877527DB4E3700E01486 /* m2_daan_project.xcdatamodeld */,
+				3B55773627E20EB30010475B /* CustomCell.swift */,
 			);
 			path = m2_daan_project;
 			sourceTree = "<group>";
@@ -147,6 +150,7 @@
 			files = (
 				3B72877727DB4E3700E01486 /* m2_daan_project.xcdatamodeld in Sources */,
 				3B72877127DB4E3700E01486 /* ViewController.swift in Sources */,
+				3B55773727E20EB30010475B /* CustomCell.swift in Sources */,
 				3B72876D27DB4E3700E01486 /* AppDelegate.swift in Sources */,
 				3B72876F27DB4E3700E01486 /* SceneDelegate.swift in Sources */,
 			);

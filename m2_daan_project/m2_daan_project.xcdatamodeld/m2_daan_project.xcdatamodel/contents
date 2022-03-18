@@ -2,16 +2,21 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
-        <attribute name="total" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="timers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Timer" inverseName="category" inverseEntity="Timer"/>
+        <relationship name="timers" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Timer" inverseName="category" inverseEntity="Timer"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="Timer" representedClassName="Timer" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
-        <attribute name="time" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="timers" inverseEntity="Category"/>
+        <attribute name="start" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="time" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="timers" inverseEntity="Category"/>
     </entity>
     <elements>
-        <element name="Category" positionX="-63" positionY="-18" width="128" height="74"/>
-        <element name="Timer" positionX="-54" positionY="9" width="128" height="74"/>
+        <element name="Category" positionX="65.46484375" positionY="-198.19140625" width="128" height="73"/>
+        <element name="Timer" positionX="-26.15234375" positionY="98.96484375" width="128" height="89"/>
     </elements>
 </model>
