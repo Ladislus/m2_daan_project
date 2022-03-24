@@ -14,33 +14,45 @@ class ViewController: UIViewController, UITableViewDataSource {
     }
     
     @IBAction func addCategory() {
-        let newCategory = Category(context: self._context)
-        newCategory.name = "Default"
         
-        let newTimer = Timer(context: self._context)
-        newTimer.name = "Timer 1"
-        newTimer.start = nil
-        newTimer.end = nil
-        newTimer.time = 0.0
-        newTimer.category = newCategory
-
-        do {
-            try self._context.save()
-            print("Saved category: '" + newCategory.name! + "'")
+        let alert = UIAlertController(title: "Ajouter une catégorie", message: "Veuillez entrer le nom de la catégorie que vous voulez ajouter", preferredStyle: .alert)
+        var textField = UITextField()
+        let action = UIAlertAction(title: "Ajouter", style: . default) { (action) in
+            // Code qui dit ce qui se passe qd on clique sur le bouton Add
+            
+            if textField.text != .some("") && textField.text != .none {
+                let newCategory = Category(context: self._context)
+                newCategory.name = textField.text
+            
+                do {
+                    try self._context.save()
+                    print("Saved category: '" + newCategory.name! + "'")
+                } catch {
+                    print("Can't save: \(error)")
+                }
+            } else {
+                let errorAlert = UIAlertController(title: "Erreur de sauvegarde", message: "Il faut renseigner un nom pour la nouvelle catégorie", preferredStyle: .alert)
+                self.present(errorAlert, animated: true, completion: {
+                    errorAlert.view.superview?.isUserInteractionEnabled = true
+                    errorAlert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
+                })
+            }
+            
             self._tableview.reloadData()
-        } catch {
-            print("Can't save: \(error)")
         }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Nom"
+            textField = alertTextField
+        }
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
     }
     
-    @IBAction func playButtonClick(_ sender: UIButton) {
-        let data: String = sender.restorationIdentifier!
-        let section: Int = Int(data.split(separator: ";")[0]) ?? -1
-        let row: Int = Int(data.split(separator: ";")[1]) ?? -1
-        if (row < 0 || section < 0) {
-            exitWithMsg(Message: "Row or section invalid")
-        }
-        //TODO: Delete task & reload table
+    // Method to close the alert
+    @objc func dismissOnTapOutside() {
+       self.dismiss(animated: true, completion: nil)
     }
     
     private func exitWithMsg(Message msg: String?) {
@@ -61,9 +73,9 @@ class ViewController: UIViewController, UITableViewDataSource {
             return []
         }
     }
-    
-    // Fonction qui précise le nombre de sections à afficher
-    func numberOfSections(in tableView: UITableView) -> Int {
+        
+    // Fonction qui retourne le nombre d'éléments à afficher par section
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         do {
             let count: Int = try self._context.count(for: Category.fetchRequest())
             return count
@@ -74,34 +86,17 @@ class ViewController: UIViewController, UITableViewDataSource {
             return -1
         }
     }
-        
-    // Fonction qui retourne le nombre d'éléments à afficher par section
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let cats = self.getAllCategories()
-        let maxIndex: Int = cats.count - 1
-        if (section > maxIndex) { exitWithMsg(Message: "Section index: \(section) is out of bounds [0; \(maxIndex)] in method 'tableView(numberOfRowsInSection)'") }
-        if let timers = cats[section].timers {
-            return timers.count
-        } else {
-            return 0 
-        }
-    }
-
-    // Fonction appelée pour gérer les headers (une section = une catégorie de tâches) de la TableView
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let cats = self.getAllCategories()
-        let maxIndex: Int = cats.count - 1
-        if (section > maxIndex) { exitWithMsg(Message: "Section index: \(section) is out of bounds [0; \(maxIndex)] in method 'tableView(titleForHeaderInSection)'") }
-        return cats[section].name
-    }
 
     // Fonction appelée pour créer une case et la remplir
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCell
-        let timer = self.getAllCategories()[indexPath.section].timers?.object(at: indexPath.row) as! Timer
-        cell._text?.text = timer.name
-        cell._label.text = "\(String(format: "%.2f", timer.time))s"
-        cell._play.restorationIdentifier = "\(indexPath.section);\(indexPath.row)"
+        let cat = self.getAllCategories()[indexPath.row]
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCellIdentifier", for: indexPath) as! CategoryCell
+        cell._title?.text = cat.name
+        cell._time?.text = "\(String(format: "%.2f", 0))s"
+        
         return cell
     }
+    
+    
 }
