@@ -2,16 +2,16 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19574" systemVersion="21C52" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Category" representedClassName="Category" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
-        <relationship name="timers" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Timer" inverseName="category" inverseEntity="Timer"/>
+        <relationship name="chronos" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Chrono" inverseName="category" inverseEntity="Chrono"/>
     </entity>
-    <entity name="Timer" representedClassName="Timer" syncable="YES" codeGenerationType="class">
+    <entity name="Chrono" representedClassName="Chrono" syncable="YES" codeGenerationType="class">
         <attribute name="name" attributeType="String"/>
         <attribute name="start" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="time" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="timers" inverseEntity="Category"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="chronos" inverseEntity="Category"/>
     </entity>
     <elements>
         <element name="Category" positionX="65.46484375" positionY="-198.19140625" width="128" height="59"/>
-        <element name="Timer" positionX="-26.15234375" positionY="98.96484375" width="128" height="89"/>
+        <element name="Chrono" positionX="-26.15234375" positionY="98.96484375" width="128" height="89"/>
     </elements>
 </model>

@@ -15,24 +15,24 @@ class DetailsViewController: UIViewController, UITableViewDataSource {
         self._title.text = self.category.name
     }
     
-    @IBAction func addTimer() {
-        let alert = UIAlertController(title: "Ajouter un timer", message: "Veuillez entrer le nom du timer que vous voulez ajouter", preferredStyle: .alert)
+    @IBAction func addChrono() {
+        let alert = UIAlertController(title: "Ajouter un chrono", message: "Veuillez entrer le nom du chrono que vous voulez ajouter", preferredStyle: .alert)
         var textField = UITextField()
         let action = UIAlertAction(title: "Ajouter", style: . default) { (action) in
             // Code qui dit ce qui se passe qd on clique sur le bouton Add
             if textField.text != .some("") && textField.text != .none {
-                let newTimer = Timer(context: self._context)
-                newTimer.name = textField.text
-                newTimer.category = self.category
+                let newChrono = Chrono(context: self._context)
+                newChrono.name = textField.text
+                newChrono.category = self.category
             
                 do {
                     try self._context.save()
-                    print("Saved timer: '" + newTimer.name! + "'")
+                    print("Saved chrono: '" + newChrono.name! + "'")
                 } catch {
                     print("Can't save: \(error)")
                 }
             } else {
-                let errorAlert = UIAlertController(title: "Erreur de sauvegarde", message: "Il faut renseigner un nom pour le nouveau timer", preferredStyle: .alert)
+                let errorAlert = UIAlertController(title: "Erreur de sauvegarde", message: "Il faut renseigner un nom pour le nouveau chrono", preferredStyle: .alert)
                 self.present(errorAlert, animated: true, completion: {
                     errorAlert.view.superview?.isUserInteractionEnabled = true
                     errorAlert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
@@ -58,16 +58,19 @@ class DetailsViewController: UIViewController, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.category.timers?.count ?? 0
+        return self.category.chronos?.count ?? 0
     }
     
     // Fonction appelée pour créer une case et la remplir
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let timer = self.category.timers![indexPath.row] as! Timer
+        let chrono = self.category.chronos![indexPath.row] as! Chrono
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TimerCellIdentifier", for: indexPath) as! TimerCell
-        cell._title?.text = timer.name
-        cell._time?.text = "\(String(format: "%.2f", timer.time))s"
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ChronoCellIdentifier", for: indexPath) as! ChronoCell
+        cell._title?.text = chrono.name
+        cell._time?.text = "\(String(format: "%.2f", chrono.time))s"
+        cell._chrono = chrono
+        cell._context = self._context
+        cell.initisialize()
         
         return cell
     }
@@ -75,12 +78,22 @@ class DetailsViewController: UIViewController, UITableViewDataSource {
     // Suppression d'une cellule
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let timer = self.category.timers![indexPath.row] as! Timer
-            timer.category = nil
             
-            print("Timer '\(timer.name!)' supprimée !")
+            let cell = tableView.cellForRow(at: indexPath) as! ChronoCell
+            cell._timer.invalidate()
             
-            self._context.delete(timer)
+            let chrono = cell._chrono!
+            chrono.category = nil
+            
+            print("Chrono '\(chrono.name!)' supprimée !")
+            
+            self._context.delete(chrono)
+            do {
+                try self._context.save()
+                print("Chrono suppression commit")
+            } catch {
+                print("Can't commit: \(error)")
+            }
             self._tableview.deleteRows(at: [indexPath], with: .fade)
         }
     }

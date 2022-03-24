@@ -93,6 +93,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCellIdentifier", for: indexPath) as! CategoryCell
         cell._title?.text = cat.name
         cell._time?.text = "\(String(format: "%.2f", 0))s"
+        cell._category = cat
+        cell.start()
         
         return cell
     }
@@ -100,11 +102,21 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     // Suppression d'une cellule
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let cat = self.getAllCategories()[indexPath.row]
+            
+            let cell = tableView.cellForRow(at: indexPath) as! CategoryCell
+            cell._timer.invalidate()
+    
+            let cat = cell._category!
             
             print("Categorie '\(cat.name!)' supprimée !")
             
             self._context.delete(cat)
+            do {
+                try self._context.save()
+                print("Category suppression commit")
+            } catch {
+                print("Can't commit: \(error)")
+            }
             self._tableview.deleteRows(at: [indexPath], with: .fade)
         }
     }
