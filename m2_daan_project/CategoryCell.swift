@@ -15,6 +15,6 @@ class CategoryCell: UITableViewCell {
         print("Update category '\(self._category.name ?? "")'")
         
         let t = totalTime(self._category)
-        self._time.text = "\(String(format: "%.2f", t))s"
+        self._time.text = secondsToString(TimeInSeconds: t)
     }
 }

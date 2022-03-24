@@ -92,7 +92,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCellIdentifier", for: indexPath) as! CategoryCell
         cell._title?.text = cat.name
-        cell._time?.text = "\(String(format: "%.2f", 0))s"
+        cell._time?.text = secondsToString(TimeInSeconds: 0)
         cell._category = cat
         cell.start()
         

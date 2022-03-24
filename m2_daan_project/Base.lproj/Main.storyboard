@@ -37,23 +37,20 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryCellIdentifier" id="Kdh-p0-UOB" customClass="CategoryCell" customModule="m2_daan_project" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="43"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kdh-p0-UOB" id="xjD-Jf-LzF">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hHX-oK-Bx7">
-                                                    <rect key="frame" x="324" y="11" width="70" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="70" id="RWD-64-S7c"/>
-                                                    </constraints>
+                                                    <rect key="frame" x="356" y="11" width="38" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kVS-Dq-5y9">
-                                                    <rect key="frame" x="20" y="11" width="304" height="21"/>
+                                                    <rect key="frame" x="20" y="11" width="33" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -63,7 +60,6 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="kVS-Dq-5y9" secondAttribute="bottom" id="7sC-RS-QAs"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="hHX-oK-Bx7" secondAttribute="trailing" id="Pcw-IO-fX5"/>
                                                 <constraint firstItem="kVS-Dq-5y9" firstAttribute="leading" secondItem="xjD-Jf-LzF" secondAttribute="leadingMargin" id="VKu-kO-2HI"/>
-                                                <constraint firstItem="hHX-oK-Bx7" firstAttribute="leading" secondItem="kVS-Dq-5y9" secondAttribute="trailing" id="edm-aJ-Cv4"/>
                                                 <constraint firstItem="hHX-oK-Bx7" firstAttribute="top" secondItem="xjD-Jf-LzF" secondAttribute="topMargin" id="i25-Rg-wai"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="hHX-oK-Bx7" secondAttribute="bottom" id="mgu-dt-bZw"/>
                                                 <constraint firstItem="kVS-Dq-5y9" firstAttribute="top" secondItem="xjD-Jf-LzF" secondAttribute="topMargin" id="pVP-iP-jSM"/>

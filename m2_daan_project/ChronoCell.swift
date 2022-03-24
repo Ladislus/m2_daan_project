@@ -50,7 +50,7 @@ class ChronoCell: UITableViewCell {
         print("Update chrono '\(self._chrono.name ?? "")'")
         
         let t = totalTime(self._chrono)
-        self._time.text = "\(String(format: "%.2f", t))s"
+        self._time.text = secondsToString(TimeInSeconds: t)
     }
     
     private func stop() {

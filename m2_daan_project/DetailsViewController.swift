@@ -67,7 +67,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChronoCellIdentifier", for: indexPath) as! ChronoCell
         cell._title?.text = chrono.name
-        cell._time?.text = "\(String(format: "%.2f", chrono.time))s"
+        cell._time?.text = secondsToString(TimeInSeconds: totalTime(chrono))
         cell._chrono = chrono
         cell._context = self._context
         cell.initisialize()
