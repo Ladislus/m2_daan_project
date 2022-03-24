@@ -1,16 +1,16 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController, UITableViewDataSource {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var _tableview: UITableView!
-    var _context: NSManagedObjectContext!
+    let _context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self._context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         self._tableview.dataSource = self
+        self._tableview.delegate = self
     }
     
     @IBAction func addCategory() {
@@ -19,7 +19,6 @@ class ViewController: UIViewController, UITableViewDataSource {
         var textField = UITextField()
         let action = UIAlertAction(title: "Ajouter", style: . default) { (action) in
             // Code qui dit ce qui se passe qd on clique sur le bouton Add
-            
             if textField.text != .some("") && textField.text != .none {
                 let newCategory = Category(context: self._context)
                 newCategory.name = textField.text
@@ -98,5 +97,30 @@ class ViewController: UIViewController, UITableViewDataSource {
         return cell
     }
     
+    // Suppression d'une cellule
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let cat = self.getAllCategories()[indexPath.row]
+            
+            print("Categorie '\(cat.name!)' supprimée !")
+            
+            self._context.delete(cat)
+            self._tableview.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Sélectionner le Main Storyboard
+        let Storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let cat = self.getAllCategories()[indexPath.row]
+        print("Catégorie \(cat.name!) cliquée")
+        // Sélectionner dedans le controleur DetailViewController à l'aide de son identifiant DetailCV telqu'installé dans l'inspecteur des propriétés (rubrique Identity, Storyboard ID)
+        let DvC = Storyboard.instantiateViewController(withIdentifier: "DetailsVC") as! DetailsViewController
+        // Retirer le visuel de sélection de la cellule (désactiver zone grise)
+        tableView.deselectRow(at: indexPath, animated: true)
+        // Remplir les données de l'objet DetailViewController
+        DvC.category = cat
+        // Empiler le DetailViewController sur le NavigationController qui englobe la vue qui contient la TableView
+        self.navigationController?.pushViewController(DvC, animated: true)
+    }
 }
