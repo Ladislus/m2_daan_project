@@ -49,6 +49,10 @@ class ChronoCell: UITableViewCell {
     @objc private func update() {
         print("Update chrono '\(self._chrono.name ?? "")'")
         
+        if self._chrono.name == nil {
+            self._timer.invalidate()
+        }
+        
         let t = totalTime(self._chrono)
         self._time.text = secondsToString(TimeInSeconds: t)
     }
