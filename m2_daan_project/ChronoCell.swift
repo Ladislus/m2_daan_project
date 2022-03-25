@@ -50,6 +50,7 @@ class ChronoCell: UITableViewCell {
         print("Update chrono '\(self._chrono.name ?? "")'")
         
         if self._chrono.name == nil {
+            print("Killing chrono")
             self._timer.invalidate()
         }
         
