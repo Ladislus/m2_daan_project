@@ -41,12 +41,37 @@ class DetailsViewController: UIViewController, UITableViewDataSource {
             
             self._tableview.reloadData()
         }
+        let actionQuick = UIAlertAction(title: "QickStart", style: .destructive) { (action) in
+            // Code qui dit ce qui se passe qd on clique sur le bouton Add
+            if textField.text != .some("") && textField.text != .none {
+                let newChrono = Chrono(context: self._context)
+                newChrono.name = textField.text
+                newChrono.category = self.category
+                newChrono.start = Date()
+            
+                do {
+                    try self._context.save()
+                    print("Saved chrono: '" + newChrono.name! + "'")
+                } catch {
+                    print("Can't save: \(error)")
+                }
+            } else {
+                let errorAlert = UIAlertController(title: "Erreur de sauvegarde", message: "Il faut renseigner un nom pour le nouveau chrono", preferredStyle: .alert)
+                self.present(errorAlert, animated: true, completion: {
+                    errorAlert.view.superview?.isUserInteractionEnabled = true
+                    errorAlert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
+                })
+            }
+            
+            self._tableview.reloadData()
+        }
         
         alert.addTextField { (alertTextField) in
             alertTextField.placeholder = "Nom"
             textField = alertTextField
         }
         alert.addAction(action)
+        alert.addAction(actionQuick)
         
         present(alert, animated: true, completion: nil)
     }
