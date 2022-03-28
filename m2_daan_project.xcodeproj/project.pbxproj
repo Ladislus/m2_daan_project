@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B0038CB27F1A0B7004794CB /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0038CA27F1A0B7004794CB /* MapViewController.swift */; };
 		3B1161A727ECC0FC0043F404 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1161A627ECC0FC0043F404 /* CategoryCell.swift */; };
 		3B1161AB27ECEB8E0043F404 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1161AA27ECEB8E0043F404 /* DetailsViewController.swift */; };
 		3B1161AF27ED0A250043F404 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B1161AE27ED0A250043F404 /* Utils.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3B0038CA27F1A0B7004794CB /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		3B1161A627ECC0FC0043F404 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		3B1161AA27ECEB8E0043F404 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		3B1161AE27ED0A250043F404 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				3B55773627E20EB30010475B /* ChronoCell.swift */,
 				3B1161A627ECC0FC0043F404 /* CategoryCell.swift */,
 				3B1161AA27ECEB8E0043F404 /* DetailsViewController.swift */,
+				3B0038CA27F1A0B7004794CB /* MapViewController.swift */,
 			);
 			path = m2_daan_project;
 			sourceTree = "<group>";
@@ -161,6 +164,7 @@
 				3B72877127DB4E3700E01486 /* ViewController.swift in Sources */,
 				3B55773727E20EB30010475B /* ChronoCell.swift in Sources */,
 				3B72876D27DB4E3700E01486 /* AppDelegate.swift in Sources */,
+				3B0038CB27F1A0B7004794CB /* MapViewController.swift in Sources */,
 				3B1161AB27ECEB8E0043F404 /* DetailsViewController.swift in Sources */,
 				3B72876F27DB4E3700E01486 /* SceneDelegate.swift in Sources */,
 				3B1161A727ECC0FC0043F404 /* CategoryCell.swift in Sources */,

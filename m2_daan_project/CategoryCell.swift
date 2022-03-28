@@ -12,7 +12,7 @@ class CategoryCell: UITableViewCell {
     }
     
     @objc private func update() {
-        print("Update category '\(self._category.name ?? "")'")
+//        print("Update category '\(self._category.name ?? "")'")
         
         let t = totalTime(self._category)
         self._time.text = secondsToString(TimeInSeconds: t)

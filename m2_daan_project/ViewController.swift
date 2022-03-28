@@ -13,6 +13,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self._tableview.delegate = self
     }
     
+    @IBAction func GoToMap() {
+        // Sélectionner le Main Storyboard
+        let Storyboard = UIStoryboard(name: "Main", bundle: nil)
+        print("Goto Map")
+        // Sélectionner dedans le controleur DetailViewController à l'aide de son identifiant DetailCV telqu'installé dans l'inspecteur des propriétés (rubrique Identity, Storyboard ID)
+        let MvC = Storyboard.instantiateViewController(withIdentifier: "MapVC") as! MapViewController
+        MvC._context = self._context
+        // Empiler le DetailViewController sur le NavigationController qui englobe la vue qui contient la TableView
+        self.navigationController?.pushViewController(MvC, animated: true)
+    }
+    
     @IBAction func addCategory() {
         
         let alert = UIAlertController(title: "Ajouter une catégorie", message: "Veuillez entrer le nom de la catégorie que vous voulez ajouter", preferredStyle: .alert)

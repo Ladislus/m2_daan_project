@@ -1,18 +1,28 @@
 import UIKit
 import CoreData
+import MapKit
 
-class DetailsViewController: UIViewController, UITableViewDataSource {
+class DetailsViewController: UIViewController, UITableViewDataSource, CLLocationManagerDelegate {
 
     @IBOutlet weak var _tableview: UITableView!
     @IBOutlet weak var _title: UILabel!
     var category: Category!
     let _context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    let _loc = CLLocationManager()
+    var userPosition: CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self._tableview.dataSource = self
         self._title.text = self.category.name
+
+        self._loc.requestAlwaysAuthorization()
+        self._loc.desiredAccuracy = kCLLocationAccuracyBest
+        self._loc.requestWhenInUseAuthorization()
+        self._loc.startUpdatingLocation()
+        self._loc.delegate = self
+        self._loc.startUpdatingHeading()
     }
     
     @IBAction func addChrono() {
@@ -24,6 +34,10 @@ class DetailsViewController: UIViewController, UITableViewDataSource {
                 let newChrono = Chrono(context: self._context)
                 newChrono.name = textField.text
                 newChrono.category = self.category
+                if let pos = self.userPosition {
+                    newChrono.lat = pos.coordinate.latitude
+                    newChrono.lon = pos.coordinate.longitude
+                }
             
                 do {
                     try self._context.save()
@@ -48,6 +62,10 @@ class DetailsViewController: UIViewController, UITableViewDataSource {
                 newChrono.name = textField.text
                 newChrono.category = self.category
                 newChrono.start = Date()
+                if let pos = self.userPosition {
+                    newChrono.lat = pos.coordinate.latitude
+                    newChrono.lon = pos.coordinate.longitude
+                }
             
                 do {
                     try self._context.save()
@@ -81,6 +99,13 @@ class DetailsViewController: UIViewController, UITableViewDataSource {
        self.dismiss(animated: true, completion: nil)
     }
     
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if locations.count > 0 {
+             if let pos = locations.last {
+              userPosition = pos
+             }
+         }
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.category.chronos?.count ?? 0

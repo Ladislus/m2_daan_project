@@ -15,7 +15,9 @@ class ChronoCell: UITableViewCell {
     func initisialize() {
         if (self._chrono.start == .none || self._chrono.start == nil) {
             self._status = true
+            self._button.setImage(UIImage(systemName: "play.fill"), for: .normal)
         } else {
+            self._button.setImage(UIImage(systemName: "stop.fill"), for: .normal)
             self._status = false
             self._timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(update), userInfo: nil, repeats: true)
         }
@@ -45,10 +47,10 @@ class ChronoCell: UITableViewCell {
     }
     
     @objc private func update() {
-        print("Update chrono '\(self._chrono.name ?? "")'")
+//        print("Update chrono '\(self._chrono.name ?? "")'")
         
         if self._chrono.name == nil {
-            print("Killing chrono")
+//            print("Killing chrono")
             self._timer.invalidate()
         }
         
