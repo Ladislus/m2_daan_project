@@ -17,6 +17,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
         self._tableview.dataSource = self
         self._title.text = self.category.name
 
+        // Activate Geoloc'
         self._loc.requestAlwaysAuthorization()
         self._loc.desiredAccuracy = kCLLocationAccuracyBest
         self._loc.requestWhenInUseAuthorization()
@@ -25,20 +26,25 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
         self._loc.startUpdatingHeading()
     }
     
+    // Function link to the "+" button to add a chrono
     @IBAction func addChrono() {
+        // Popup to add a chrono
         let alert = UIAlertController(title: "Ajouter un chrono", message: "Veuillez entrer le nom du chrono que vous voulez ajouter", preferredStyle: .alert)
         var textField = UITextField()
+        // Action to add a chrono
         let action = UIAlertAction(title: "Ajouter", style: . default) { (action) in
-            // Code qui dit ce qui se passe qd on clique sur le bouton Add
+            // Assert textfield is not empty
             if textField.text != .some("") && textField.text != .none {
                 let newChrono = Chrono(context: self._context)
                 newChrono.name = textField.text
                 newChrono.category = self.category
+                // If the geoloc is available, add it to the task
                 if let pos = self.userPosition {
                     newChrono.lat = pos.coordinate.latitude
                     newChrono.lon = pos.coordinate.longitude
                 }
             
+                // Save into CoreData
                 do {
                     try self._context.save()
                     print("Saved chrono: '" + newChrono.name! + "'")
@@ -52,11 +58,11 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
                     errorAlert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
                 })
             }
-            
+            // Update Chrono table
             self._tableview.reloadData()
         }
+        // Same action but with a quickstart (Chrono already started
         let actionQuick = UIAlertAction(title: "QickStart", style: .destructive) { (action) in
-            // Code qui dit ce qui se passe qd on clique sur le bouton Add
             if textField.text != .some("") && textField.text != .none {
                 let newChrono = Chrono(context: self._context)
                 newChrono.name = textField.text
@@ -99,6 +105,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
        self.dismiss(animated: true, completion: nil)
     }
     
+    // Function called to update the location
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count > 0 {
              if let pos = locations.last {
@@ -107,11 +114,12 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
          }
     }
     
+    // Function which return the amount of rows in the table
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.category.chronos?.count ?? 0
     }
     
-    // Fonction appelée pour créer une case et la remplir
+    // Function to create a new cell
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let chrono = self.category.chronos![indexPath.row] as! Chrono
         
@@ -125,7 +133,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
         return cell
     }
     
-    // Suppression d'une cellule
+    // Cell deletion
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             

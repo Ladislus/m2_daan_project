@@ -1,5 +1,6 @@
 import Foundation
 
+// Utility function to compute total timer for a Chrono
 public func totalTime(_ chrono: Chrono) -> Double {
     if let start = chrono.start {
         return Date().timeIntervalSince(start) + chrono.time
@@ -7,6 +8,7 @@ public func totalTime(_ chrono: Chrono) -> Double {
     return chrono.time
 }
 
+// Utility function to compute the sum of all the associated chronos
 public func totalTime(_ category: Category) -> Double {
     var total: Double = 0
     if let timersList = category.chronos {
@@ -17,6 +19,7 @@ public func totalTime(_ category: Category) -> Double {
     return total
 }
 
+// Utility method to convert Seconds to a String HH:MM:SS
 public func secondsToString(TimeInSeconds inputTime: Double) -> String {
     
     let time: Int = Int(inputTime)
