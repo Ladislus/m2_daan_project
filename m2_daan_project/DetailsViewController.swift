@@ -109,7 +109,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if locations.count > 0 {
              if let pos = locations.last {
-              userPosition = pos
+                 self.userPosition = pos
              }
          }
     }

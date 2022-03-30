@@ -7,6 +7,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     var _context: NSManagedObjectContext!
     @IBOutlet weak var _map: MKMapView!
     
+    let _loc = CLLocationManager()
+    var userPosition: CLLocation?
+    
+    var firstUpdate = true
+    
     // Constants to point map on France
     let _long = 2.213749
     let _lat = 46.22
@@ -14,11 +19,27 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set the map on France
-        let coords = CLLocationCoordinate2D(latitude: self._lat, longitude: self._long)
-        let span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
-        let region = MKCoordinateRegion(center: coords, span: span)
-        self._map.setRegion(region, animated: true)
+        // Activate Geoloc'
+        self._loc.requestAlwaysAuthorization()
+        self._loc.desiredAccuracy = kCLLocationAccuracyBest
+        self._loc.requestWhenInUseAuthorization()
+        self._loc.startUpdatingLocation()
+        self._loc.delegate = self
+        self._loc.startUpdatingHeading()
+        
+        // Set the map on current position or default to France
+//        var coords: CLLocationCoordinate2D!
+//        if let pos = self.userPosition {
+//            print("User current position")
+//            coords = CLLocationCoordinate2D(latitude: pos.coordinate.latitude, longitude: pos.coordinate.longitude)
+//        } else {
+//            print("Default position to France")
+//            coords = CLLocationCoordinate2D(latitude: self._lat, longitude: self._long)
+//        }
+//
+//        let span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
+//        let region = MKCoordinateRegion(center: coords, span: span)
+//        self._map.setRegion(region, animated: true)
         self._map.delegate = self
         self._map.showsUserLocation = true
         
@@ -44,6 +65,24 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         }
     }
     
+    // Function called to update the location
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if locations.count > 0 {
+             if let pos = locations.last {
+                 self.userPosition = pos
+                 
+                 // The first time the position is updated (when launching the view, but after the viewDidLoad())
+                 // Update the position of the map (center the map on ourselves)
+                 if self.firstUpdate {
+                     self.firstUpdate = false;
+                     let coords = CLLocationCoordinate2D(latitude: pos.coordinate.latitude, longitude: pos.coordinate.longitude)
+                     let span = MKCoordinateSpan(latitudeDelta: 10, longitudeDelta: 10)
+                     let region = MKCoordinateRegion(center: coords, span: span)
+                     self._map.setRegion(region, animated: true)
+                 }
+             }
+         }
+    }
     
     private func exitWithMsg(Message msg: String?) {
         if let msg = msg {
