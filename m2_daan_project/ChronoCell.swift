@@ -56,9 +56,10 @@ class ChronoCell: UITableViewCell {
     
     // Function called to update display
     @objc private func update() {
-        print("Update chrono '\(self._chrono.name ?? "")'")
+//        print("Update chrono '\(self._chrono.name ?? "")'")
+        
         if self._chrono.name == nil || self._chrono == .none {
-            print("Killing chrono")
+//            print("Killing chrono")
             self._timer.invalidate()
         }
         
