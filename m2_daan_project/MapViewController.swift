@@ -84,20 +84,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
          }
     }
     
-    private func exitWithMsg(Message msg: String?) {
-        if let msg = msg {
-            print("[Error] " + msg)
-        }
-        exit(1)
-    }
-    
     private func getAllChronos() -> [Chrono] {
         let rqst = Chrono.fetchRequest()
         do {
             return try self._context.fetch(rqst)
         } catch {
             print(error)
-            self.exitWithMsg(Message: "Couldn't fetch all Chrono")
+            exitWithMsg(Message: "Couldn't fetch all Chrono")
             // Unreachable
             return []
         }

@@ -52,3 +52,11 @@ public func secondsToString(TimeInSeconds inputTime: Double) -> String {
     
     return "\(heure):\(minute):\(seconds)"
 }
+
+// Utility function exit with an error message
+public func exitWithMsg(Message msg: String?) {
+    if let msg = msg {
+        print("[Error] " + msg)
+    }
+    exit(1)
+}

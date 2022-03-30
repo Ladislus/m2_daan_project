@@ -1,7 +1,7 @@
 import UIKit
 import CoreData
 
-class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
     
     @IBOutlet weak var _tableview: UITableView!
     let _context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -11,6 +11,68 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // UITable settings
         self._tableview.dataSource = self
         self._tableview.delegate = self
+        // LongTouch settings
+        self.setupLongPressGesture()
+    }
+    
+    // Boilerplate Setup for gesture recognizer
+    func setupLongPressGesture() {
+        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
+        longPressGesture.minimumPressDuration = 0.5 // 0,5 second press
+        longPressGesture.delegate = self
+        self._tableview.addGestureRecognizer(longPressGesture)
+    }
+    
+    // Function called to handle LongTouch gesture (Rename category)
+    @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        let touchPoint = gestureRecognizer.location(in: self._tableview)
+        if let indexPath = self._tableview.indexPathForRow(at: touchPoint) {
+            let clickedCell = self._tableview.cellForRow(at: indexPath) as! CategoryCell
+            let clickedCategory = clickedCell._category!
+            // Create the alert
+            let alert = UIAlertController(title: "Editer la catéforie", message: "Veuillez entrer le nouveau nom de la catégorie '\(clickedCategory.name ?? "")'", preferredStyle: .alert)
+            // Create a textfield to link it with the one inside the actions
+            var textField = UITextField()
+            textField.text = clickedCategory.name
+            // Default action (create the category)
+            let action = UIAlertAction(title: "Editer", style: . default) { (action) in
+                // Check if the textfield is empty
+                if textField.text != .some("") && textField.text != .none {
+                    // Create the new category
+                    clickedCategory.name = textField.text
+                
+                    // Try saving it
+                    do {
+                        try self._context.save()
+                        print("Updated category: '" + clickedCategory.name! + "'")
+                    } catch {
+                        print("Can't save: \(error)")
+                    }
+                    // Textfield is empty
+                } else {
+                    // Popup error
+                    let errorAlert = UIAlertController(title: "Erreur de sauvegarde", message: "Il faut renseigner un nom pour la catégorie", preferredStyle: .alert)
+                    // Prensent the error with the possibility to tap it out
+                    self.present(errorAlert, animated: true, completion: {
+                        errorAlert.view.superview?.isUserInteractionEnabled = true
+                        errorAlert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
+                    })
+                }
+                // Update UITable to display new Category
+                self._tableview.reloadData()
+            }
+            // Add the textfield
+            alert.addTextField { (alertTextField) in
+                alertTextField.placeholder = "Nom"
+                alertTextField.text = clickedCategory.name
+                textField = alertTextField
+            }
+            alert.addAction(action)
+            // Prensent the pop-up
+            present(alert, animated: true, completion: nil)
+        } else {
+            exitWithMsg(Message: "Couldn't convert touchpoint \(touchPoint) to IndexPath")
+        }
     }
     
     @IBAction func GoToMap() {
@@ -27,7 +89,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     }
     
     @IBAction func addCategory() {
-        // Create the aloert
+        // Create the alert
         let alert = UIAlertController(title: "Ajouter une catégorie", message: "Veuillez entrer le nom de la catégorie que vous voulez ajouter", preferredStyle: .alert)
         // Create a textfield to link it with the one inside the actions
         var textField = UITextField()
@@ -74,14 +136,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
        self.dismiss(animated: true, completion: nil)
     }
     
-    // Utility function exit with an error message
-    private func exitWithMsg(Message msg: String?) {
-        if let msg = msg {
-            print("[Error] " + msg)
-        }
-        exit(1)
-    }
-    
     // Fetch all categories from CoreData
     private func getAllCategories() -> [Category] {
         let rqst = Category.fetchRequest()
@@ -89,7 +143,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return try self._context.fetch(rqst)
         } catch {
             print(error)
-            self.exitWithMsg(Message: "Couldn't fetch all categories")
+            exitWithMsg(Message: "Couldn't fetch all categories")
             // Unreachable
             return []
         }
@@ -102,7 +156,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             return count
         } catch {
             print(error)
-            self.exitWithMsg(Message: "Couldn't fetch category count")
+            exitWithMsg(Message: "Couldn't fetch category count")
             // Unreachable
             return -1
         }

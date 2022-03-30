@@ -2,7 +2,7 @@ import UIKit
 import CoreData
 import MapKit
 
-class DetailsViewController: UIViewController, UITableViewDataSource, CLLocationManagerDelegate {
+class DetailsViewController: UIViewController, UITableViewDataSource, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
 
     @IBOutlet weak var _tableview: UITableView!
     @IBOutlet weak var _title: UILabel!
@@ -16,6 +16,8 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
         
         self._tableview.dataSource = self
         self._title.text = self.category.name
+        
+        self.setupLongPressGesture()
 
         // Activate Geoloc'
         self._loc.requestAlwaysAuthorization()
@@ -133,12 +135,72 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
         return cell
     }
     
+    // Boilerplate Setup for gesture recognizer
+    func setupLongPressGesture() {
+        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.handleLongPress))
+        longPressGesture.minimumPressDuration = 0.5 // 0,5 second press
+        longPressGesture.delegate = self
+        self._tableview.addGestureRecognizer(longPressGesture)
+    }
+    
+    // Function called to handle LongTouch gesture (Rename category)
+    @objc func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        let touchPoint = gestureRecognizer.location(in: self._tableview)
+        if let indexPath = self._tableview.indexPathForRow(at: touchPoint) {
+            let clickedCell = self._tableview.cellForRow(at: indexPath) as! ChronoCell
+            let clickedChrono = clickedCell._chrono!
+            // Create the alert
+            let alert = UIAlertController(title: "Editer le chrono", message: "Veuillez entrer le nouveau nom du chrono '\(clickedChrono.name ?? "")'", preferredStyle: .alert)
+            // Create a textfield to link it with the one inside the actions
+            var textField = UITextField()
+            textField.text = clickedChrono.name
+            // Default action (create the category)
+            let action = UIAlertAction(title: "Editer", style: . default) { (action) in
+                // Check if the textfield is empty
+                if textField.text != .some("") && textField.text != .none {
+                    // Create the new category
+                    clickedChrono.name = textField.text
+                
+                    // Try saving it
+                    do {
+                        try self._context.save()
+                        print("Updated chrono: '" + clickedChrono.name! + "'")
+                    } catch {
+                        print("Can't save: \(error)")
+                    }
+                    // Textfield is empty
+                } else {
+                    // Popup error
+                    let errorAlert = UIAlertController(title: "Erreur de sauvegarde", message: "Il faut renseigner un nom pour le chrono", preferredStyle: .alert)
+                    // Prensent the error with the possibility to tap it out
+                    self.present(errorAlert, animated: true, completion: {
+                        errorAlert.view.superview?.isUserInteractionEnabled = true
+                        errorAlert.view.superview?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.dismissOnTapOutside)))
+                    })
+                }
+                // Update UITable to display new Category
+                self._tableview.reloadData()
+            }
+            // Add the textfield
+            alert.addTextField { (alertTextField) in
+                alertTextField.placeholder = "Nom"
+                alertTextField.text = clickedChrono.name
+                textField = alertTextField
+            }
+            alert.addAction(action)
+            // Prensent the pop-up
+            present(alert, animated: true, completion: nil)
+        } else {
+            exitWithMsg(Message: "Couldn't convert touchpoint \(touchPoint) to IndexPath")
+        }
+    }
+    
     // Cell deletion
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
             let cell = tableView.cellForRow(at: indexPath) as! ChronoCell
-            cell._timer.invalidate()
+            cell._timer?.invalidate()
             
             let chrono = cell._chrono!
             chrono.category = nil
