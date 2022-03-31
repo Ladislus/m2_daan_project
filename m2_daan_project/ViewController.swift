@@ -37,7 +37,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             // Default action (create the category)
             let action = UIAlertAction(title: "Editer", style: . default) { (action) in
                 // Check if the textfield is empty
-                if textField.text != .some("") && textField.text != .none {
+                if textField.text != .some("") && textField.text != .none && textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                     
                     let event = ApplicationEvent(context: self._context)
                     event.time = Date()
@@ -111,7 +111,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         // Default action (create the category)
         let action = UIAlertAction(title: "Ajouter", style: . default) { (action) in
             // Check if the textfield is empty
-            if textField.text != .some("") && textField.text != .none {
+            if textField.text != .some("") && textField.text != .none && textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                 // Create the new category
                 let newCategory = Category(context: self._context)
                 newCategory.name = textField.text

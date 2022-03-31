@@ -36,7 +36,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
         // Action to add a chrono
         let action = UIAlertAction(title: "Ajouter", style: . default) { (action) in
             // Assert textfield is not empty
-            if textField.text != .some("") && textField.text != .none {
+            if textField.text != .some("") && textField.text != .none  && textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                 let newChrono = Chrono(context: self._context)
                 newChrono.name = textField.text
                 newChrono.category = self.category
@@ -69,7 +69,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
         }
         // Same action but with a quickstart (Chrono already started
         let actionQuick = UIAlertAction(title: "QickStart", style: .destructive) { (action) in
-            if textField.text != .some("") && textField.text != .none {
+            if textField.text != .some("") && textField.text != .none && textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                 let newChrono = Chrono(context: self._context)
                 newChrono.name = textField.text
                 newChrono.category = self.category
@@ -165,7 +165,7 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
             // Default action (create the category)
             let action = UIAlertAction(title: "Editer", style: . default) { (action) in
                 // Check if the textfield is empty
-                if textField.text != .some("") && textField.text != .none {
+                if textField.text != .some("") && textField.text != .none  && textField.text?.trimmingCharacters(in: .whitespacesAndNewlines) != "" {
                     
                     let event = ApplicationEvent(context: self._context)
                     event.time = Date()
