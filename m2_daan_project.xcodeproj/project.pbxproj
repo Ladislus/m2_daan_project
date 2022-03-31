@@ -20,6 +20,8 @@
 		3B72877927DB4E3800E01486 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B72877827DB4E3800E01486 /* Assets.xcassets */; };
 		3B72877C27DB4E3800E01486 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3B72877A27DB4E3800E01486 /* LaunchScreen.storyboard */; };
 		3B72878427DB504A00E01486 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 3B72878327DB504A00E01486 /* .gitignore */; };
+		3B93AE7527F5DE08003E0AA6 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B93AE7427F5DE08003E0AA6 /* HistoryViewController.swift */; };
+		3B93AE7727F5DFDB003E0AA6 /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B93AE7627F5DFDB003E0AA6 /* EventCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		3B72877B27DB4E3800E01486 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3B72877D27DB4E3800E01486 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3B72878327DB504A00E01486 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		3B93AE7427F5DE08003E0AA6 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		3B93AE7627F5DFDB003E0AA6 /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,8 @@
 				3B1161A627ECC0FC0043F404 /* CategoryCell.swift */,
 				3B1161AA27ECEB8E0043F404 /* DetailsViewController.swift */,
 				3B0038CA27F1A0B7004794CB /* MapViewController.swift */,
+				3B93AE7427F5DE08003E0AA6 /* HistoryViewController.swift */,
+				3B93AE7627F5DFDB003E0AA6 /* EventCell.swift */,
 			);
 			path = m2_daan_project;
 			sourceTree = "<group>";
@@ -163,8 +169,10 @@
 				3B72877727DB4E3700E01486 /* m2_daan_project.xcdatamodeld in Sources */,
 				3B72877127DB4E3700E01486 /* ViewController.swift in Sources */,
 				3B55773727E20EB30010475B /* ChronoCell.swift in Sources */,
+				3B93AE7527F5DE08003E0AA6 /* HistoryViewController.swift in Sources */,
 				3B72876D27DB4E3700E01486 /* AppDelegate.swift in Sources */,
 				3B0038CB27F1A0B7004794CB /* MapViewController.swift in Sources */,
+				3B93AE7727F5DFDB003E0AA6 /* EventCell.swift in Sources */,
 				3B1161AB27ECEB8E0043F404 /* DetailsViewController.swift in Sources */,
 				3B72876F27DB4E3700E01486 /* SceneDelegate.swift in Sources */,
 				3B1161A727ECC0FC0043F404 /* CategoryCell.swift in Sources */,

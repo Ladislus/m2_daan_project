@@ -38,6 +38,11 @@ class ChronoCell: UITableViewCell {
     private func play() {
         // Save the current time
         self._chrono.start = Date()
+        
+        let event = ApplicationEvent(context: self._context)
+        event.time = Date()
+        event.event = "Chrono \(self._chrono.name ?? "") de la catégorie '\(self._chrono.category?.name ?? "")' lancé"
+        
         do {
             // Save in CoreData
             try self._context.save()
@@ -77,6 +82,11 @@ class ChronoCell: UITableViewCell {
         self._chrono.time += difference
         // Reset starting time
         self._chrono.start = nil
+        
+        let event = ApplicationEvent(context: self._context)
+        event.time = Date()
+        event.event = "Chrono \(self._chrono.name ?? "") de la catégorie '\(self._chrono.category?.name ?? "")' stoppé"
+        
         
         // Update in CoreData
         do {

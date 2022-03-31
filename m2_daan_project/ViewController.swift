@@ -38,6 +38,11 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             let action = UIAlertAction(title: "Editer", style: . default) { (action) in
                 // Check if the textfield is empty
                 if textField.text != .some("") && textField.text != .none {
+                    
+                    let event = ApplicationEvent(context: self._context)
+                    event.time = Date()
+                    event.event = "Categorie '\(clickedCategory.name ?? "")' renommée '\(textField.text ?? "")'"
+                    
                     // Create the new category
                     clickedCategory.name = textField.text
                 
@@ -88,6 +93,16 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.navigationController?.pushViewController(MvC, animated: true)
     }
     
+    @IBAction func GoToHistory() {
+        // Select "Main" storyboard
+        let Storyboard = UIStoryboard(name: "Main", bundle: nil)
+        print("Goto Map")
+        // Select the HistoryViewController
+        let HvC = Storyboard.instantiateViewController(withIdentifier: "HistoryVC") as! HistoryViewController
+        // Launch navigation
+        self.navigationController?.pushViewController(HvC, animated: true)
+    }
+    
     @IBAction func addCategory() {
         // Create the alert
         let alert = UIAlertController(title: "Ajouter une catégorie", message: "Veuillez entrer le nom de la catégorie que vous voulez ajouter", preferredStyle: .alert)
@@ -101,6 +116,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 let newCategory = Category(context: self._context)
                 newCategory.name = textField.text
             
+                let event = ApplicationEvent(context: self._context)
+                event.time = Date()
+                event.event = "Categorie '\(newCategory.name ?? "")' créée"
+                
                 // Try saving it
                 do {
                     try self._context.save()
@@ -185,6 +204,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             cell._timer.invalidate()
     
             let cat = cell._category!
+            
+            let event = ApplicationEvent(context: self._context)
+            event.time = Date()
+            event.event = "Categorie '\(cat.name ?? "")' supprimée"
             
             print("Categorie '\(cat.name!)' supprimée !")
             

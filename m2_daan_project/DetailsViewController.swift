@@ -45,6 +45,10 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
                     newChrono.lat = pos.coordinate.latitude
                     newChrono.lon = pos.coordinate.longitude
                 }
+                
+                let event = ApplicationEvent(context: self._context)
+                event.time = Date()
+                event.event = "Chrono \(newChrono.name ?? "") de la catégorie '\(newChrono.category?.name ?? "")' créée"
             
                 // Save into CoreData
                 do {
@@ -74,6 +78,10 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
                     newChrono.lat = pos.coordinate.latitude
                     newChrono.lon = pos.coordinate.longitude
                 }
+                
+                let event = ApplicationEvent(context: self._context)
+                event.time = Date()
+                event.event = "Chrono \(newChrono.name ?? "") de la catégorie '\(newChrono.category?.name ?? "")' créée en QuickStart"
             
                 do {
                     try self._context.save()
@@ -158,6 +166,11 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
             let action = UIAlertAction(title: "Editer", style: . default) { (action) in
                 // Check if the textfield is empty
                 if textField.text != .some("") && textField.text != .none {
+                    
+                    let event = ApplicationEvent(context: self._context)
+                    event.time = Date()
+                    event.event = "Chrono \(clickedChrono.name ?? "") de la catégorie '\(clickedChrono.category?.name ?? "")' renomée '\(textField.text ?? "")'"
+                    
                     // Create the new category
                     clickedChrono.name = textField.text
                 
@@ -204,6 +217,10 @@ class DetailsViewController: UIViewController, UITableViewDataSource, CLLocation
             
             let chrono = cell._chrono!
             chrono.category = nil
+            
+            let event = ApplicationEvent(context: self._context)
+            event.time = Date()
+            event.event = "Chrono \(chrono.name ?? "") de la catégorie '\(chrono.category?.name ?? "")' supprimée"
             
             print("Chrono '\(chrono.name!)' supprimée !")
             
